@@ -1,6 +1,6 @@
-# Cinch::Karma
+# Cinch::Plugins::Karma
 
-TODO: Write a gem description
+Cinch PLugin to track Karma.
 
 ## Installation
 
@@ -18,7 +18,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Just add the plugin to your list:
+
+    @bot = Cinch::Bot.new do
+      configure do |c|
+        c.plugins.plugins = [Cinch::Plugins::Karma]
+      end
+    end
+
+Then in channel use the following commands:
+
+    item++ || item--
+
+    .karma item
 
 ## Contributing
 
