@@ -1,7 +1,2 @@
-require "cinch-karma/version"
-
-module Cinch
-  module Karma
-    # Your code goes here...
-  end
-end
+require 'cinch/plugins/karma/version'
+require 'cinch/plugins/karma/karma'
