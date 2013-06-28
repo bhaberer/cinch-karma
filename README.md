@@ -1,6 +1,12 @@
 # Cinch::Plugins::Karma
 
-Cinch PLugin to track Karma.
+[![Gem Version](https://badge.fury.io/rb/cinch-karma.png)](http://badge.fury.io/rb/cinch-karma)
+[![Dependency Status](https://gemnasium.com/bhaberer/cinch-karma.png)](https://gemnasium.com/bhaberer/cinch-karma)
+[![Build Status](https://travis-ci.org/bhaberer/cinch-karma.png?branch=master)](https://travis-ci.org/bhaberer/cinch-karma)
+[![Coverage Status](https://coveralls.io/repos/bhaberer/cinch-karma/badge.png?branch=master)](https://coveralls.io/r/bhaberer/cinch-karma?branch=master)
+[![Code Climate](https://codeclimate.com/github/bhaberer/cinch-karma.png)](https://codeclimate.com/github/bhaberer/cinch-karma)
+
+Cinch Plugin to track Karma.
 
 ## Installation
 

@@ -1,3 +1,4 @@
+require 'cinch'
 require 'cinch-cooldown'
 require 'cinch-storage'
 
@@ -26,8 +27,6 @@ module Cinch::Plugins
         updated = false
 
         m.message.scan(/.*?((\w+)|\((.+?)\))(\+\+|--)(\s|\z)/).each do |karma|
-          debug "#{karma}"
-
           if karma[0]
             item = karma[1] || karma[2]
             item.downcase!
@@ -56,7 +55,7 @@ module Cinch::Plugins
 
     def execute(m, item)
       if m.channel.nil?
-        m.user.msg "You must use that command in the main channel."
+        m.user.reply "You must use that command in the main channel."
         return
       end
 
