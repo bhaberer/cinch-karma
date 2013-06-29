@@ -23,32 +23,40 @@ module Cinch::Plugins
     def listen(m)
       if m.message.match(/\S+[\+\-]{2}/)
         channel = m.channel.name
-        @storage.data[channel] = Hash.new unless @storage.data.key?(channel)
 
+        # Scan messages for multiple karma items
         m.message.scan(/(\s|\A)(\w+|\(.+?\))(\+\+|--)(\s|\z)/).each do |karma|
-          operation = karma[2]
-          item      = karma[1].gsub(/\(|\)/, '').downcase
-
-          @storage.data[channel][item] ||= 0
-
-          case operation
-          when '++'
-            @storage.data[channel][item] += 1
-          when '--'
-            @storage.data[channel][item] -= 1
-          end
-
-          @storage.synced_save
+          process_karma(channel, karma[1].gsub(/\(|\)/, '').downcase, karma[2])
         end
+
+        @storage.synced_save
       end
     end
 
     def execute(m, item)
       return if sent_via_pm?(m)
 
-      @storage.data[m.channel.name] ||= Hash.new
-      karma = @storage.data[m.channel.name][item.downcase] || 0
-      m.reply "Karma for #{item} is #{karma}"
+      channel = m.channel.name
+      item.downcase!
+      init_karma(channel, item)
+
+      m.reply "Karma for #{item} is #{@storage.data[channel][item]}"
+    end
+
+    private
+
+    def process_karma(channel, item, operation)
+      # Ensure the item's Karma has been init
+      init_karma(channel, item)
+
+      case operation
+      when '++'
+        @storage.data[channel][item] += 1
+      when '--'
+        @storage.data[channel][item] -= 1
+      else
+        debug "Issue with processing karma op: #{operation} item: #{item}."
+      end
     end
 
     def sent_via_pm?(m)
@@ -56,6 +64,11 @@ module Cinch::Plugins
         m.reply "You must use that command in the main channel."
         return true
       end
+    end
+
+    def init_karma(channel, item = nil)
+      @storage.data[channel] ||= Hash.new
+      @storage.data[channel][item] ||= 0 unless item.nil?
     end
   end
 end
