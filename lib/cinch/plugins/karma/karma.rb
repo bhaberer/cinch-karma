@@ -24,44 +24,38 @@ module Cinch::Plugins
       if m.message.match(/\S+[\+\-]{2}/)
         channel = m.channel.name
         @storage.data[channel] = Hash.new unless @storage.data.key?(channel)
-        updated = false
 
-        m.message.scan(/.*?((\w+)|\((.+?)\))(\+\+|--)(\s|\z)/).each do |karma|
-          if karma[0]
-            item = karma[1] || karma[2]
-            item.downcase!
+        m.message.scan(/(\s|\A)(\w+|\(.+?\))(\+\+|--)(\s|\z)/).each do |karma|
+          operation = karma[2]
+          item      = karma[1].gsub(/\(|\)/, '').downcase
 
-            @storage.data[channel][item] = 0 unless @storage.data[channel].key?(item)
+          @storage.data[channel][item] ||= 0
 
-            if karma[3] == '++'
-              @storage.data[channel][item] += 1
-              updated = true
-            elsif karma[3] == '--'
-              @storage.data[channel][item] -= 1
-              updated = true
-            else
-              debug 'something went wrong matching karma!'
-            end
+          case operation
+          when '++'
+            @storage.data[channel][item] += 1
+          when '--'
+            @storage.data[channel][item] -= 1
           end
-        end
 
-        if updated
-          synchronize(:karma_save) do
-            @storage.save
-          end
+          @storage.synced_save
         end
       end
     end
 
     def execute(m, item)
-      if m.channel.nil?
-        m.user.reply "You must use that command in the main channel."
-        return
-      end
+      return if sent_via_pm?(m)
 
-      @storage.data[m.channel.name] = Hash.new unless @storage.data.key?(m.channel.name)
+      @storage.data[m.channel.name] ||= Hash.new
       karma = @storage.data[m.channel.name][item.downcase] || 0
       m.reply "Karma for #{item} is #{karma}"
+    end
+
+    def sent_via_pm?(m)
+      if m.channel.nil?
+        m.reply "You must use that command in the main channel."
+        return true
+      end
     end
   end
 end
