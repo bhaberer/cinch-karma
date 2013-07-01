@@ -29,7 +29,7 @@ module Cinch::Plugins
           process_karma(channel, karma[1].gsub(/\(|\)/, '').downcase, karma[2])
         end
 
-        @storage.synced_save
+        @storage.synced_save(@bot)
       end
     end
 
@@ -54,8 +54,6 @@ module Cinch::Plugins
         @storage.data[channel][item] += 1
       when '--'
         @storage.data[channel][item] -= 1
-      else
-        debug "Issue with processing karma op: #{operation} item: #{item}."
       end
     end
 
