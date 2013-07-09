@@ -1,5 +1,5 @@
 require 'cinch'
-require 'cinch-cooldown'
+require 'cinch/cooldown'
 require 'cinch-storage'
 
 module Cinch::Plugins

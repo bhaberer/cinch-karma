@@ -36,7 +36,7 @@ Then in channel use the following commands:
 
     item++ || item--
 
-    .karma item
+    !karma item
 
 ## Contributing
 
