@@ -1,14 +1,18 @@
+# -*- coding: utf-8 -*-
 require 'cinch'
 require 'cinch/cooldown'
 require 'cinch-storage'
 
 module Cinch::Plugins
+  # Cinch Plugin to monitor karma and report.
   class Karma
     include Cinch::Plugin
 
     enforce_cooldown
 
-    self.help = 'Use .karma <item> to see it\'s karma level. You can use <item>++ or <item>-- [or (something with spaces)++] to alter karma for an item'
+    self.help = 'Use .karma <item> to see it\'s karma level. You can use ' +
+                '<item>++ or <item>-- [or (something with spaces)++] to ' +
+                'alter karma for an item'
 
     listen_to :channel
 
@@ -59,13 +63,13 @@ module Cinch::Plugins
 
     def sent_via_pm?(m)
       if m.channel.nil?
-        m.reply "You must use that command in the main channel."
+        m.reply 'You must use that command in the main channel.'
         return true
       end
     end
 
     def init_karma(channel, item = nil)
-      @storage.data[channel] ||= Hash.new
+      @storage.data[channel] ||= {}
       @storage.data[channel][item] ||= 0 unless item.nil?
     end
   end
