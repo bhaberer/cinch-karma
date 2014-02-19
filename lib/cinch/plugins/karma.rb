@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'cinch'
 require 'cinch/cooldown'
-require 'cinch-storage'
+require 'cinch/storage'
 
 module Cinch::Plugins
   # Cinch Plugin to monitor karma and report.
@@ -21,7 +21,7 @@ module Cinch::Plugins
 
     def initialize(*args)
       super
-      @storage = CinchStorage.new(config[:filename] || 'yaml/karma.yml')
+      @storage = Cinch::Storage.new(config[:filename] || 'yaml/karma.yml')
     end
 
     def listen(m)
