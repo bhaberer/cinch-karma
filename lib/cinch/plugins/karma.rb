@@ -3,74 +3,73 @@ require 'cinch'
 require 'cinch/cooldown'
 require 'cinch/storage'
 
-module Cinch::Plugins
-  # Cinch Plugin to monitor karma and report.
-  class Karma
-    include Cinch::Plugin
+module Cinch
+  module Plugins
+    # Cinch Plugin to monitor karma and report.
+    class Karma
+      include Cinch::Plugin
 
-    enforce_cooldown
+      enforce_cooldown
 
-    self.help = 'Use .karma <item> to see it\'s karma level. You can use ' +
-                '<item>++ or <item>-- [or (something with spaces)++] to ' +
-                'alter karma for an item'
+      self.help = 'Use .karma <item> to see it\'s karma level. You can use ' \
+                  '<item>++ or <item>-- [or (something with spaces)++] to ' \
+                  'alter karma for an item'
 
-    listen_to :channel
+      listen_to :channel
 
-    match /karma (.+)/
-    match /k (.+)/
+      match(/(?:k|karma) (.+)/)
 
-    def initialize(*args)
-      super
-      @storage = Cinch::Storage.new(config[:filename] || 'yaml/karma.yml')
-    end
+      def initialize(*args)
+        super
+        @storage = Cinch::Storage.new(config[:filename] || 'yaml/karma.yml')
+      end
 
-    def listen(m)
-      if m.message.match(/\S+[\+\-]{2}/)
+      def listen(m)
+        return unless m.message.match(/\S+[\+\-]{2}/)
         channel = m.channel.name
 
         # Scan messages for multiple karma items
-        m.message.scan(/(\s|\A)(\w+|\(.+?\))(\+\+|--)(\s|\z)/).each do |karma|
-          process_karma(channel, karma[1].gsub(/\(|\)/, '').downcase, karma[2])
+        m.message.scan(/(\s|\A)(\w+|\(.+?\))(\+\+|--)(\s|\z)/).each do |k|
+          process_karma(channel, k[1].gsub(/\(|\)/, '').downcase, k[2])
         end
 
         @storage.synced_save(@bot)
       end
-    end
 
-    def execute(m, item)
-      return if sent_via_pm?(m)
+      def execute(m, item)
+        return if sent_via_pm?(m)
 
-      channel = m.channel.name
-      item.downcase!
-      init_karma(channel, item)
+        channel = m.channel.name
+        item.downcase!
+        init_karma(channel, item)
 
-      m.reply "Karma for #{item} is #{@storage.data[channel][item]}"
-    end
-
-    private
-
-    def process_karma(channel, item, operation)
-      # Ensure the item's Karma has been init
-      init_karma(channel, item)
-
-      case operation
-      when '++'
-        @storage.data[channel][item] += 1
-      when '--'
-        @storage.data[channel][item] -= 1
+        m.reply "Karma for #{item} is #{@storage.data[channel][item]}"
       end
-    end
 
-    def sent_via_pm?(m)
-      if m.channel.nil?
+      private
+
+      def process_karma(channel, item, operation)
+        # Ensure the item's Karma has been init
+        init_karma(channel, item)
+
+        case operation
+        when '++'
+          @storage.data[channel][item] += 1
+        when '--'
+          @storage.data[channel][item] -= 1
+        end
+      end
+
+      def sent_via_pm?(m)
+        return false unless m.channel.nil?
         m.reply 'You must use that command in the main channel.'
-        return true
+        true
       end
-    end
 
-    def init_karma(channel, item = nil)
-      @storage.data[channel] ||= {}
-      @storage.data[channel][item] ||= 0 unless item.nil?
+      def init_karma(channel, item = nil)
+        @storage.data[channel] ||= {}
+        @storage.data[channel][item] ||= 0 unless item.nil?
+      end
     end
   end
 end
