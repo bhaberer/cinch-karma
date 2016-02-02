@@ -3,8 +3,9 @@
 [![Gem Version](https://badge.fury.io/rb/cinch-karma.png)](http://badge.fury.io/rb/cinch-karma)
 [![Dependency Status](https://gemnasium.com/bhaberer/cinch-karma.png)](https://gemnasium.com/bhaberer/cinch-karma)
 [![Build Status](https://travis-ci.org/bhaberer/cinch-karma.png?branch=master)](https://travis-ci.org/bhaberer/cinch-karma)
-[![Coverage Status](https://coveralls.io/repos/bhaberer/cinch-karma/badge.png?branch=master)](https://coveralls.io/r/bhaberer/cinch-karma?branch=master)
-[![Code Climate](https://codeclimate.com/github/bhaberer/cinch-karma.png)](https://codeclimate.com/github/bhaberer/cinch-karma)
+[![Code Climate](https://codeclimate.com/repos/56af21c150b09a6eae007a3c/badges/679592aa4d94bb6a5e35/gpa.svg)](https://codeclimate.com/repos/56af21c150b09a6eae007a3c/feed)
+[![Test Coverage](https://codeclimate.com/repos/56af21c150b09a6eae007a3c/badges/679592aa4d94bb6a5e35/coverage.svg)](https://codeclimate.com/repos/56af21c150b09a6eae007a3c/coverage)
+[![Issue Count](https://codeclimate.com/repos/56af21c150b09a6eae007a3c/badges/679592aa4d94bb6a5e35/issue_count.svg)](https://codeclimate.com/repos/56af21c150b09a6eae007a3c/feed)
 
 Cinch Plugin to track Karma.
 
