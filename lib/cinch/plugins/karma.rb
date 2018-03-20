@@ -34,6 +34,7 @@ module Cinch
         end
 
         @storage.synced_save(@bot)
+	m.reply "#{item} now has #{@storage.data[channel][item]} points of karma"
       end
 
       def execute(m, item)
@@ -43,7 +44,7 @@ module Cinch
         item.downcase!
         init_karma(channel, item)
 
-        m.reply "Karma for #{item} is #{@storage.data[channel][item]}"
+        m.reply "#{item} has #{@storage.data[channel][item]} points of karma"
       end
 
       private
