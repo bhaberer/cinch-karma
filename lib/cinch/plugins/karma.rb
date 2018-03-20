@@ -34,7 +34,7 @@ module Cinch
           process_karma(channel, k[1].gsub(/\(|\)/, '').downcase, k[2])
 	  item = k[1].gsub(/\(|\)/, '')
 	  @storage.synced_save(@bot)
-	  m.reply "#{item} now has #{@storage.data[channel][item]} points of karma"
+	  m.reply "#{item} now has #{@storage.data[channel][item.downcase]} points of karma"
         end
         @storage.synced_save(@bot)
       end
