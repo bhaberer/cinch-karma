@@ -30,7 +30,6 @@ module Cinch
 
         # Scan messages for multiple karma items
         m.message.scan(/(^|\s|\A|\b)(\w+|\(.+?\))(\+\+|--)(\s|\z|$)/).each do |k|
-	  m.reply "#{k}"
           process_karma(channel, k[1].gsub(/\(|\)/, '').downcase, k[2])
 	  item = k[1].gsub(/\(|\)/, '')
 	  @storage.synced_save(@bot)
