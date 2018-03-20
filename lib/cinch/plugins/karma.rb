@@ -29,7 +29,7 @@ module Cinch
         channel = m.channel.name
 
         # Scan messages for multiple karma items
-        m.message.scan(/(\s|\A)(\w+|\(.+?\))(\+\+|--)(\s|\z)/).each do |k|
+        m.message.scan(/(\s|\A)(\w+|\(.+?\))(\+\+|--)(\s|\z|$)/).each do |k|
 	  m.reply "#{k}"
           process_karma(channel, k[1].gsub(/\(|\)/, '').downcase, k[2])
 #	  item = k[1].gsub(/\(|\)/, '')
