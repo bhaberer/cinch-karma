@@ -29,10 +29,12 @@ module Cinch
         channel = m.channel.name
 
         # Scan messages for multiple karma items
-        m.message.scan(/(\s|\A)(\w+|\(.+?\))(\+\+|--)(\s|\z)/).each do |k|
+        m.message.scan(/(^|\s|\A|\b)([\w-.]+|\(.+?\))(\+\+|--)(\s|\z|$)/g).each do |k|
           process_karma(channel, k[1].gsub(/\(|\)/, '').downcase, k[2])
+	  item = k[1].gsub(/\(|\)/, '')
+	  @storage.synced_save(@bot)
+	  m.reply "#{item} now has #{@storage.data[channel][item.downcase]} point(s) of karma"
         end
-
         @storage.synced_save(@bot)
       end
 
@@ -43,7 +45,7 @@ module Cinch
         item.downcase!
         init_karma(channel, item)
 
-        m.reply "Karma for #{item} is #{@storage.data[channel][item]}"
+        m.reply "#{item} has #{@storage.data[channel][item]} point(s) of karma"
       end
 
       private
